@@ -1,10 +1,8 @@
 from __future__ import absolute_import, unicode_literals
-from celery import task, shared_task, group, chain, chord
-from event_placement.celery import app
+from celery import task, chain, chord
 from celery.utils.log import get_task_logger
 import os
 import sys
-import json
 from .spiders_2 import Spiders, Parter, Concert, Karabas
 from .import_db import ImportDb
 from .get_facebook_events import Facebook  # request_until_succeed,process_dict
@@ -24,7 +22,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'event_placement.settings.production'
 
 import django
 django.setup()
-from events.models import Event, Platform
+from events.models import Platform
 
 # from spiders.tasks import task_caribbean_parse, task_test_one, task_test_two, task_test_three, chain_caribbean, chain_chord_test
 

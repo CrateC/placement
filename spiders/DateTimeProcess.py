@@ -20,16 +20,13 @@ def datetime_process(dd):
     elif dd_type is 'dict':
         pass
 
-    #print("===============================================")
-    #print("")
 
-    dl = ['month', 'day', 'time_start']
+    #dl = ['month', 'day', 'time_start']
 
     try:
         dd['month'] = date_to_number(dd['month'].lower())
     except Exception as e:
         dt_string = dd
-        # print("//////Exception")
 
     try:
         dt_string = date_time_to_var(dd)
@@ -41,16 +38,11 @@ def datetime_process(dd):
             """.format(e, dt_string))
     finally:
         dd['date'] = str(data_parse(dt_string))
-        # print(
-        #     """
-        #         input (dd): {}
-        #         result (dd['date']): {}
-        #     """.format(dd, dd['date']))
 
     return {k: v for k, v in dd.items() if k not in ['month',
                                                      'day',
-                                                     'time_start']
-    }
+                                                     'time_start']}
+
 
 def data_parse(dt):
 

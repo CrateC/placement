@@ -15,16 +15,16 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '103.250.83.254']
+ALLOWED_HOSTS = [
+                '127.0.0.1',
+                'localhost',
+                '103.250.83.254',
+                '188.208.141.187'
+                ]
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# sys.path.append(BASE_DIR)
-# os.environ['DJANGO_SETTINGS_MODULE'] = 'event_placement.settings.base'
 
 
 STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'staticfiles'))
@@ -32,7 +32,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# STATIC_ROOT = 'C:/Python/Training/django-core/django-events-placement/src/static/'
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = 'media'
@@ -50,13 +49,6 @@ STATICFILES_FINDERS = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_SSL_REDIRECT = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -76,10 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gunicorn',
     'events',
-    #'events.get_domain',
     'spiders',
-    #'django_celery_beat',
-    #'django_celery_results',
     'django_mysql',
 
 ]
@@ -177,17 +166,6 @@ DATABASES = {
 }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-# # add this
-# import dj_database_url
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -235,10 +213,10 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-     'console':{
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
+        'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+            },
     },
     'loggers': {
         'django.request': {
@@ -248,30 +226,14 @@ LOGGING = {
         },
     }
 }
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATIC_ROOT = os.path.join(PROJECT_PATH, 'staticfiles')
-
-
-# Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
-
-# Other Django configurations...
-
-
-###############################################################################
-###############################################################################
 
 """
 CELERY
 ======
 
-# Celery application definition
-# http://docs.celeryproject.org/en/v4.0.2/userguide/configuration.html
+Celery application
+definition http://docs.celeryproject.org/en/v4.0.2/userguide/configuration.html
 
 """
 
@@ -290,19 +252,10 @@ CELERY_TIMEZONE = 'Europe/Kiev'
 CELERY_IMPORTS = [
     'spiders.tasks',
     'events.tasks',
-    #'spiders.'
-    # 'spiders.caribbean.tasks',
-    # 'spiders.parter.tasks',
 ]
 
-# import spiders.caribbean
-# import spiders.parter
 import sys
 sys.path.insert(0, "../event_placement")
-#from spiders.caribbean import *
-#from spiders.parter import *
-#from spiders import *
-from spiders.tasks import task_caribbean_parse, task_parsed_to_db, task_parter_parse
 from kombu import Exchange, Queue
 CELERY_TASK_QUEUES = (
     Queue('mainchain', Exchange('mainchain'), routing_key='mainchain'),
@@ -312,10 +265,6 @@ CELERY_TASK_QUEUES = (
     Queue('page_load', Exchange('page_load'), routing_key='page_load'),
 )
 
-# QUEUES="mainchain,high,todb,normal,low"
-# celery multi start worker -A project.foo -Q "$QUEUES" -l debug --concurrency=1 --prefetch-multiplier=1 -Ofair -D --logfile=celery.log
-
-# celery multi stop worker1 worker2 worker3 -A event_placement -l DEBUG -Q:worker1 mainchain -Q:worker2 todb -Q:worker3 high -Ofair -D --logfile=celery.log
 
 CELERY_DEFAULT_QUEUE = 'normal'
 CELERY_DEFAULT_EXCHANGE = 'normal'
@@ -336,45 +285,18 @@ CELERY_ROUTES = {
 
     'spiders.tasks.task_parsed_to_db': {'queue': 'todb'},
 
-    # 'spiders.tasks.task_test_one': {'queue': 'high'},
-    #'spiders.tasks.task_caribbean_parse': {'queue': 'high'},
-    # -- NORMAL PRIORITY QUEUE   -- #
-    # 'spiders.tasks.task_test_two': {'queue': 'normal'},
-    # -- LOW PRIORITY QUEUE -- #
-    # 'spiders.tasks.task_test_three': {'queue': 'low'},
 }
 
 
-# tasl_sh
-# celery -A event_placement worker -E -l INFO -n worker.high -Q high --beat
-# celery -A event_placement worker -E -l INFO -n worker.normal -Q normal --beat
-# celery -A event_placement worker -E -l INFO -n worker.low -Q low --beat
 CELERY_SEND_TASK_SENT_EVENT = True
 CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 CELERY_ENABLE_UTC = False
 CELERY_MAX_TASKS_PER_CHILD=2
-# django_celery_beat
 
-# celery -A event_placement worker -E -l INFO -n worker.mainchain -Q mainchain
-# celery -A event_placement worker -E -l INFO -n worker.todb -Q todb
-# celery -A event_placement worker -E -l INFO -n worker.high -Q high
-# celery -A event_placement worker -E -l INFO -n worker.normal -Q normal
-# celery -A event_placement worker -E -l INFO -n worker.low -Q low
-
-# celery -A event_placement beat -l debug -S django
-
-
-# celery flower -A event_placement --address=127.0.0.1 --port=5555 -E -l INFO -n worker.high -Q high --beat
-# flower -A event_placement --address=127.0.0.1 --port=5555 --beat
-
-
-# celery -A event_placement worker -l info
-# celery -A event_placement beat -l info -n worker.high -Q high
-# celery -A event_placement worker -E -l INFO -n worker.high -Q high
 
 
 # The following lines may contains pseudo-code
-from celery.schedules import crontab
+#from celery.schedules import crontab
 # Other Celery settings
 CELERY_BEAT_SCHEDULE = {
 
@@ -383,60 +305,5 @@ CELERY_BEAT_SCHEDULE = {
     #     'schedule': 60.0, # crontab(minute='*/15'),  # 5.0,
     #     'options': {'queue': 'mainchain'},
     #     'args': ()
-    # },
-    # TESTS
-    # 'task-chain-chord-test': {
-    #     'task': 'spiders.tasks.chain_chord_test',
-    #     'schedule': 60.0, # crontab(minute='*/15'),  # 5.0,
-    #     'options': {'queue': 'mainchain'},
-    #     'args': ()
-    # },
-    # 'task-number-one': {
-    #     'task': 'spiders.tasks.task_test_one',
-    #     'schedule': 5.0,  # crontab(),
-    #     'options': {'queue': 'high'},
-    #     'args': ()
-    # },
-    # 'add-every-10-seconds': {
-    #         'task': 'spiders.tasks.task_test_two',
-    #         'schedule': 10.0,
-    #         'options': {'queue': 'normal'},
-    #         'args': ()
-    # },
-    # 'add-every-20-seconds': {
-    #         'task': 'spiders.tasks.task_test_three',
-    #         'schedule': 20.0,
-    #         'options': {'queue': 'low'},
-    #         'args': ()
-    # },
-    # 'task-number-one': {
-    #     'task': 'spiders.caribbean.tasks.task_number_one',
-    #     'schedule': 5.0,#crontab(),
-    #     'args': ()
-    # },
-    # 'add-every-10-seconds': {
-    #         'task': 'spiders.caribbean.tasks.task_number_one_two',
-    #         'schedule': 10.0,
-    #         'args': ()
-    # },
-    # 'add-every-20-seconds': {
-    #         'task': 'spiders.caribbean.tasks.task_number_one_three',
-    #         'schedule': 20.0,
-    #         'args': ()
-    # },
-    # 'task-number-two': {
-    #     'task': 'spiders.parter.tasks.task_number_two',
-    #     'schedule': 5.0,#crontab(),
-    #     'args': (3, 4)
-    # },
-    # 'add-every-30-seconds': {
-    #         'task': 'spiders.parter.tasks.task_number_one_two',
-    #         'schedule': 10.0,
-    #         'args': (16, 16)
-    # },
-    # 'add-every-40-seconds': {
-    #         'task': 'spiders.parter.tasks.task_number_three',
-    #         'schedule': 20.0,
-    #         'args': (16, 16)
     # },
 }

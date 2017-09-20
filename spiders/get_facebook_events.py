@@ -23,14 +23,10 @@ class Facebook:
 
         import django
         django.setup()
-        from events.models import Event, Platform
+        from events.models import Platform
 
         self.p_name = p_name
         self.page = Platform.objects.filter(short_name=self.p_name).values()[0]['link']
-
-        print()
-        print(self.page)
-        print()
 
     def get_event_data(self):
         config = configparser.RawConfigParser()
@@ -41,14 +37,8 @@ class Facebook:
         fields = config['FB']['fields']
         limit = '&limit=%s' % config['FB']['limit']
         parameters = '&access_token=%s' % config['FB']['access_token']
-        page_link = self.page
 
         url = base + self.page + fields + limit + parameters
-
-        print()
-        print(url)
-        print()
-
         return url
 
     def request_until_succeed(self):

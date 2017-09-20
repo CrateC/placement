@@ -13,8 +13,6 @@ try:
 except:
     from .DateTimeProcess import datetime_process
 import grequests
-#from event_placement.celery import app
-from celery import Task
 from gevent import monkey
 import socket
 from importlib import reload
