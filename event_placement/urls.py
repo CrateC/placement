@@ -16,9 +16,7 @@ Including another URLconf
 from django.contrib.auth.views import LoginView
 from django.views.generic import RedirectView
 from events.views import EventsPlacementListView, EventsPlacemenOrmView
-from events import views
-#from spiders import views
-from django.conf.urls import url, include
+from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [

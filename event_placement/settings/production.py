@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import sys
+from kombu import Exchange, Queue
 
 ALLOWED_HOSTS = [
                 '127.0.0.1',
@@ -22,16 +24,15 @@ ALLOWED_HOSTS = [
                 '188.208.141.187'
                 ]
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'staticfiles'))
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = 'media'
@@ -44,7 +45,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -246,17 +246,15 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Kiev'
 
 
-
-
-
 CELERY_IMPORTS = [
     'spiders.tasks',
     'events.tasks',
 ]
 
-import sys
+
+
 sys.path.insert(0, "../event_placement")
-from kombu import Exchange, Queue
+
 CELERY_TASK_QUEUES = (
     Queue('mainchain', Exchange('mainchain'), routing_key='mainchain'),
     Queue('todb', Exchange('todb'), routing_key='todb'),
@@ -276,7 +274,7 @@ CELERY_ROUTES = {
 
     'spiders.tasks.task_caribbean_parse': {'queue': 'high'},
     'spiders.tasks.task_parter_parse': {'queue': 'normal'},
-    'spiders.tasks.fb_chain': {'queue': 'mainchain'},
+    #'spiders.tasks.fb_chain': {'queue': 'mainchain'},
     'spiders.tasks.task_facebook_parse_fc': {'queue': 'normal'},
     'spiders.tasks.task_facebook_parse_fs': {'queue': 'normal'},
     'spiders.tasks.task_facebook_parse_fj': {'queue': 'normal'},
@@ -296,14 +294,14 @@ CELERY_MAX_TASKS_PER_CHILD=2
 
 
 # The following lines may contains pseudo-code
-#from celery.schedules import crontab
+from celery.schedules import crontab
 # Other Celery settings
 CELERY_BEAT_SCHEDULE = {
 
-    # 'task-main_chain': {
-    #     'task': 'spiders.tasks.main_chain',
-    #     'schedule': 60.0, # crontab(minute='*/15'),  # 5.0,
-    #     'options': {'queue': 'mainchain'},
-    #     'args': ()
-    # },
+    'task-main_chain': {
+        'task': 'spiders.tasks.main_chain',
+        'schedule': crontab(minute=0, hour='*/6'),  # 5.0,
+        'options': {'queue': 'mainchain'},
+        'args': ()
+    },
 }
