@@ -1,0 +1,122 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+flake8/
+
+# User staff
+*.7z
+*.csv
+*.sql
+
+
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+event_placement/settings/local.py
+event_placement/settings/base.py
+event_placement/old_settings.py
+*.sqlite3
+staticfiles/*
+static/admin
+static/css
+static/staticfiles.json
+tmp
+celerybeat.pid
+celerybeat-schedule
+django
+heroku
+placement.sock
+Procfile
+python
+requirements_old.txt
+select_out.txt
+testredis.py
+LAB/
+events/lab_testing.py
+events/migrations/
+events/tests.py
+templates/events/placement_tables2.html
+templates/react_base.html
+templates/main.html
+log/*
+media/
+event_placement/settings/path_test.py
+spiders/data/*
+select_out.txt
+spiders/concert.py
+spiders/caribbean.py
+spiders/karabas.py
+spiders/parter.py
+spiders/PATH_TESTER.py
+spiders/run_spiders.py
+spiders/lab_testing.py
+templates/events/placement_tables2.html
+templates/events/assets/*
+
+
+# PyCharm
+.idea
+
+# IPython Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# dotenv
+.env
+
+# virtualenv
+venv/
+ENV/
+supervisor/

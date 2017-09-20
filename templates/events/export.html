@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load platform_name from get_platform_name %}
+<table
+    class="table table-hover table-fixed  table-condensed table-striped"
+    id="table" data-toggle="table"
+
+    data-show-refresh="false"
+    data-show-export="true"
+    data-click-to-select="true"
+    data-show-columns="true"
+    data-search="true"
+    data-mobile-responsive="true"
+    data-icon-size="m"
+    data-toolbar="#toolbar">
+
+
+    <thead class="thead-default">
+        <tr>
+            <th class="col-xs-01"  data-field="state">
+                #
+            </th>
+
+            {% for k, v in object_list.items %} {% if forloop.first %} {% for key in v %} {% if key|length == 2 %}
+
+            <th class="links" data-toggle="tooltip" data-placement="top"
+                title="{% platform_name key %}">
+
+                {{ key|upper }}
+            </th>
+
+            {% elif key == 'date' %}
+            <th class="col-xs-2">
+                {{ key|upper }}
+            </th>
+
+            {% else %}
+            <th class="col-xs-3">
+                {{ key|upper }}
+            </th>
+
+            {% endif %} {% endfor %} {% endif %} {% endfor %}
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+        {% for k, v in object_list.items %}
+
+
+        <tr data-index="{{ forloop.counter }}">
+            <td>
+                {{ forloop.counter }}
+
+            </td>
+            {% for key, val in v.items %} {% if key|length > 2 %}
+            {% if key == 'date' %}
+            <td>
+                <p>{{ val }}</p>
+            </td>
+            {% else %}
+            <td>
+                <p>{{ val }}</p>
+            </td>
+            {% endif %} {% elif key|length == 2 %}
+            {% if val not in 'None' %}
+
+            <td class="links table-success" data-tableexport-value="{{ val }}">
+
+                <span class="btn-full"><a href="{{ val }}">Yes</a>
+                </span>
+
+            </td>
+            {% else %}
+            <td data-field="no-url" class="links table-danger"><span class="btn-full">No</span></td>
+            {% endif %} {% endif %} {% endfor %}
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
