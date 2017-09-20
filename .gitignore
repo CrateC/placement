@@ -98,7 +98,7 @@ spiders/PATH_TESTER.py
 spiders/run_spiders.py
 spiders/lab_testing.py
 templates/events/placement_tables2.html
-templates/events/assets/*
+templates/events/assets/
 
 
 # PyCharm
