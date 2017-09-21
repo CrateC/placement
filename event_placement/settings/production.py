@@ -282,6 +282,7 @@ CELERY_ROUTES = {
     'spiders.tasks.task_facebook_parse_all': {'queue': 'normal'},
 
     'spiders.tasks.task_parsed_to_db': {'queue': 'todb'},
+    'events.tasks.get_query': {'queue': 'page_load'},
 
 }
 
@@ -300,7 +301,7 @@ CELERY_BEAT_SCHEDULE = {
 
     'task-main_chain': {
         'task': 'spiders.tasks.main_chain',
-        'schedule': crontab(minute=0, hour='*/6'),  # 5.0,
+        'schedule': 21600.0, # every 6 hours
         'options': {'queue': 'mainchain'},
         'args': ()
     },

@@ -17,19 +17,23 @@ class EventsPlacemenOrmView(LoginRequiredMixin, ListView):
     template_name = 'events/export.html'
 
     def get_queryset(self):
+        task_result = get_query.delay().get()
 
-        cache_key = 'Nlfjhdfyy!&pYEFmkFZN13451' # needs to be unique
-        cache_time = 86400 # time in seconds for cache to be valid
-        task_result = cache.get('task_result')
-        if not task_result:
-            task_result = get_query.delay().get()
-            cache.set(cache_key, task_result, cache_time)
-            # cache.set(
-            #         'task_result',
-            #         task_result,
-            #         depends_on=[Event]
-            # )
-        return (task_result)
+        # if you need to use the task_id somewhere else
+        # async_result = AsyncResult(id=task_result.id)
+        return task_result
+        # cache_key = 'Nlfjhdfyy!&pYEFmkFZN13451' # needs to be unique
+        # cache_time = 86400 # time in seconds for cache to be valid
+        # task_result = cache.get('task_result')
+        # if not task_result:
+        #     task_result = get_query.delay().get()
+        #     cache.set(cache_key, task_result, cache_time)
+        #     # cache.set(
+        #     #         'task_result',
+        #     #         task_result,
+        #     #         depends_on=[Event]
+        #     # )
+        # return (task_result)
 
 
 

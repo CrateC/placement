@@ -86,7 +86,7 @@ def convert_qslist_to_dict(query):
 
     query_proc = query.replace('[', '').replace(']', '').split('), (')
     from events.models import Event, Platform
-    queryset = Platform.objects.values_list('short_name', flat=True)
+    queryset = Platform.objects.values_list('short_name', flat=True).exclude(short_name='MP')
 
     columns = ['date', 'name']  # , 'ca', 'pa', 'ka', 'co'
     columns += [x.lower() for x in queryset]
